@@ -5,6 +5,7 @@ import image from './image.PNG';
 function App() {
   const [todos, setTodos] = useState([]);
   const todoRef = useRef();
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const containerStyle = {
     backgroundImage: `url(${image})`,
@@ -54,21 +55,17 @@ function App() {
     cursor: 'pointer',
   };
 
-  const listItemStyle = (index) => ({
-    background: index % 2 === 0 ? '#4caf50' : '#2196f3', // Green for even index, blue for odd index
+  const listItemStyle = (index, isHovered) => ({
+    background: isHovered ? 'lightcoral' : index % 2 === 0 ? '#4caf50' : '#2196f3',
     padding: '10px',
     marginBottom: '5px',
     borderRadius: '5px',
     position: 'relative',
     width: '1000px',
     display: 'flex',
-    justifyContent: 'space-between', // Right-justify the content
-    transition: 'background 0.3s', // Smooth transition for background color change
+    justifyContent: 'space-between',
+    transition: 'background 0.3s',
   });
-
-  const listItemHoverStyle = {
-    background: 'white', // Change to white on hover
-  };
 
   const handleAddTodo = (e) => {
     e.preventDefault();
@@ -109,12 +106,14 @@ function App() {
           {todos.map((todo, index) => (
             <li
               key={index}
-              style={{ ...listItemStyle(index), ':hover': listItemHoverStyle }}
+              className="list-item-hover"
+              style={listItemStyle(index, index === hoveredIndex)}
+              onClick={() => handleRemoveTodo(index)}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
               {todo}
-              <button style={removeButtonStyle} onClick={() => handleRemoveTodo(index)}>
-                x
-              </button>
+              <button style={removeButtonStyle}>x</button>
             </li>
           ))}
         </ul>

@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.list-item-hover:hover {
+  background-color: lightcoral; /* or any other light brown color you prefer */
+}
+
+
